@@ -1,6 +1,82 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8bi4forqiqjd"]
+[gd_scene load_steps=3 format=3 uid="uid://b8bi4forqiqjd"]
 
 [ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_nxs6f"]
 
+[sub_resource type="GDScript" id="GDScript_hc8d3"]
+script/source = "extends Node2D
+
+# Constants for the fixture
+const DOT_COUNT = 20  # Number of dots
+const DOT_RADIUS = 5  # Radius of each dot
+const DOT_SPACING = 20  # Spacing between dots
+const MAX_LENGTH = 500  # Maximum length of the line
+const MIN_LENGTH = 50  # Minimum length of the line
+
+# Variables to track the line size and interaction state
+var line_length = 200  # Initial length of the line
+var is_moving = false  # Whether the fixture is being moved
+var is_resizing = false  # Whether the line is being resized
+var start_position = Vector2()  # Starting position of the line
+
+# Mouse offset for dragging the fixture
+var drag_offset = Vector2()
+
+func _ready():
+	# Initialize the fixture and set it to be processed
+	set_process(true)
+
+# Custom drawing function to draw the line and the dots
+func _draw():
+	var step = line_length / (DOT_COUNT - 1)  # Calculate the step between each dot
+	
+	for i in range(DOT_COUNT):
+		var dot_position = Vector2(i * step, 0)  # Calculate the position of each dot
+		draw_circle(dot_position, DOT_RADIUS, Color.WHITE)  # Draw the dot
+
+	# Draw the end marker for resizing
+	draw_circle(Vector2(line_length, 0), DOT_RADIUS * 1.5, Color.RED)
+
+# Update drawing
+func _process(delta):
+	queue_redraw()
+
+# Handle mouse input for movement and resizing
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			var mouse_pos = event.position
+
+			# Check if user clicked on the end point to resize
+			if (mouse_pos - (global_position + Vector2(line_length, 0))).length() < DOT_RADIUS * 2:
+				is_resizing = true
+			elif (mouse_pos - global_position).length() < line_length:  # Check if user clicked on the line to move it
+				is_moving = true
+				drag_offset = mouse_pos - global_position
+		else:
+			is_moving = false
+			is_resizing = false
+
+	elif event is InputEventMouseMotion:
+		var mouse_pos = event.position
+
+		# Handle moving the fixture
+		if is_moving:
+			global_position = mouse_pos - drag_offset
+
+		# Handle resizing the line
+		if is_resizing:
+			var new_length = (mouse_pos - global_position).length()
+
+			# Limit the length to a reasonable range
+			line_length = clamp(new_length, MIN_LENGTH, MAX_LENGTH)
+
+# Optional: Handle snapping the line to a grid (if you want grid movement)
+func snap_to_grid(position: Vector2, grid_size: float) -> Vector2:
+	return Vector2(round(position.x / grid_size) * grid_size, round(position.y / grid_size) * grid_size)
+"
+
 [node name="Mainscene" type="Node2D"]
 script = ExtResource("1_nxs6f")
+
+[node name="Fixture" type="Node2D" parent="."]
+script = SubResource("GDScript_hc8d3")

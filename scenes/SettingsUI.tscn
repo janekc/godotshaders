@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://d07utnr0y38dk"]
+
+[ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="1_qku87"]
+
+[node name="SettingsUi" type="Node2D"]
+position = Vector2(307, 57)
+
+[node name="TargetIPInput" type="LineEdit" parent="."]
+visible = false
+offset_left = 15.0
+offset_top = 55.0
+offset_right = 82.0625
+offset_bottom = 86.0
+metadata/_edit_use_anchors_ = true
+
+[node name="DotCountInput" type="LineEdit" parent="."]
+visible = false
+offset_left = 12.0
+offset_top = 156.0
+offset_right = 79.0625
+offset_bottom = 187.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ApplyButton" type="Button" parent="."]
+visible = false
+offset_left = 19.0
+offset_top = 218.0
+offset_right = 165.0
+offset_bottom = 301.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Settings" parent="." node_paths=PackedStringArray("MenuPanelRef") instance=ExtResource("1_qku87")]
+offset_left = 19.0
+offset_top = 218.0
+offset_right = 19.0
+offset_bottom = 218.0
+MenuPanelRef = NodePath("..")
+metadata/_edit_use_anchors_ = true

@@ -1,0 +1,10 @@
+localhost:8081
+
+file_server
+
+header {
+        # Cross-Origin Isolation headers for SharedArrayBuffer and other advanced features
+        Cross-Origin-Embedder-Policy "require-corp"
+        Cross-Origin-Opener-Policy "same-origin"
+        X-Content-Type-Options "nosniff"
+    }

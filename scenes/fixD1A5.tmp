@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck1n44wjd3mgr"]
+
+[ext_resource type="Script" path="res://scripts/fixture.gd" id="1_pr77g"]
+
+[node name="Fixture" type="Node2D"]
+script = ExtResource("1_pr77g")

@@ -1,57 +1,93 @@
 extends Node
 
-# Array to hold the paths of the scenes
-var scenes = []
-var current_scene_index = 0
+# Array of paths to your scenes
+var scenes = [
+	"res://scenes/combustible_vonoroi.tscn",
+	"res://scenes/combustible_vonoroi_with_parameters.tscn",
+	"res://scenes/cosine_water.tscn",
+	"res://scenes/creation.tscn",
+	"res://scenes/drops.tscn",
+	"res://scenes/energyBeams.tscn",
+	"res://scenes/kinetic_pupils.tscn",
+	"res://scenes/phantom_star.tscn",
+	"res://scenes/protean_clouds.tscn",
+	"res://scenes/quadrilateral_grid.tscn",
+	"res://scenes/raymarching.tscn",
+	"res://scenes/slab_steps.tscn",
+	"res://scenes/speedlines.tscn",
+	"res://scenes/starfield_angeled.tscn",
+	"res://scenes/starfield_angeled.tscn",
+	"res://scenes/starry_infinite_tunnel.tscn",
+	"res://scenes/stars.tscn",
+	"res://scenes/vaporwave_grid_tweaks.tscn",
+	"res://scenes/vonoroi_synapse.tscn"
+]
 
-# Folder where the scenes are located
-const SCENE_FOLDER = "res://scenes/" # Replace this with your folder path
+# Variable to track the current scene index
+var current_scene_index = 0
+var fixture_node  # Reference to the 2D line fixture
+var settings_ui
+
 
 # Called when the node is ready
 func _ready():
-	load_scenes_from_folder(SCENE_FOLDER)
-	if scenes.size() > 0:
-		load_scene(scenes[current_scene_index])
-	else:
-		print("No scenes found in the folder")
+	# Load the first scene
+	load_scene(scenes[current_scene_index])
+	Engine.set_max_fps(60)
+	# Load the SettingsUI scene
+	var settings_ui_scene = preload("res://scenes/SettingsUI.tscn")
+	settings_ui = settings_ui_scene.instantiate()
+	add_child(settings_ui)
 
-# Function to load scenes from the folder
-func load_scenes_from_folder(folder_path: String):
-	var dir = DirAccess.open(folder_path)  # Use DirAccess to open the folder
-	if dir:
-		dir.list_dir_begin()  # Begin listing files
-		var file_name = dir.get_next()
-		while file_name != "":
-			if file_name.ends_with(".tscn"):
-				scenes.append(folder_path + file_name)  # Add full path of the scene file
-			file_name = dir.get_next()
-		dir.list_dir_end()
+	# Connect the Apply button signal
+	var apply_button = settings_ui.get_node("ApplyButton")
+	
+	for child in settings_ui.get_children():
+		print(child.name)
+	
+	if apply_button:
+		pass
+		#apply_button.connect("pressed", self, "_on_apply_button_pressed")
 	else:
-		print("Failed to open directory: " + folder_path)
+		print("ApplyButton not found in SettingsUI")
+	
 
-# Function to load a scene
+# Function to load a new scene
 func load_scene(scene_path: String):
-	var scene = load(scene_path)  # Load the PackedScene
-	var scene_instance = scene.instantiate()  # Create an instance of the scene
-	# Clear the current scene
+	var new_scene = load(scene_path).instantiate()
+	
+	# Remove the current scene (but keep the fixture)
 	for child in get_children():
-		remove_child(child)
-		child.queue_free()
-	# Add the new scene instance to the main scene
-	add_child(scene_instance)
+		if child != fixture_node:  # Don't remove the fixture
+			remove_child(child)
+			child.queue_free()
+
+	# Add the new scene
+	add_child(new_scene)
+	
+	# Add the fixture (load it from a separate scene or script)
+	# Assuming you created a separate scene for the fixture, instantiate and add it
+	fixture_node = preload("res://scenes/fixture.tscn").instantiate()
+	add_child(fixture_node)  # Add the fixture to the main scene
+
 
 # Handle input
 func _input(event):
 	# Check if the right key is pressed
 	if event.is_action_pressed("ui_right"):
-		cycle_scene(1)  # Go to the next scene
+		cycle_scene(1)  # Go to next scene
+
 	# Check if the left key is pressed (optional for going backward)
 	if event.is_action_pressed("ui_left"):
-		cycle_scene(-1)  # Go to the previous scene
+		cycle_scene(-1)  # Go to previous scene
+
+	# Delegate mouse events to the fixture if necessary
+	fixture_node._input(event)  # Forward input to the fixture
 
 # Function to cycle through scenes
 func cycle_scene(direction: int):
 	current_scene_index += direction
+
 	# Wrap around the index
 	if current_scene_index >= scenes.size():
 		current_scene_index = 0
@@ -60,3 +96,13 @@ func cycle_scene(direction: int):
 
 	# Load the new scene
 	load_scene(scenes[current_scene_index])
+
+
+func _on_apply_button_pressed():
+	# Get user input
+	var target_ip = settings_ui.get_node("TargetIPInput").text
+	var dot_count = int(settings_ui.get_node("DotCountInput").text)
+
+	# Update the fixture node variables
+	fixture_node.set_target_ip(target_ip)
+	fixture_node.set_dot_count(dot_count)

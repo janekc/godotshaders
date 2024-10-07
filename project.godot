@@ -15,10 +15,19 @@ run/main_scene="res://mainScene.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://pictures/icon.svg"
 
+[autoload]
+
+DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
+SettingsDataManager="*res://addons/modular-settings-menu/singletons/settings_data_manager.gd"
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/debug_menu/plugin.cfg", "res://addons/modular-settings-menu/plugin.cfg")
 
 [rendering]
 
