@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://od8wsbn0kdam"]
+
+[ext_resource type="Shader" path="res://shaders/vaporwave_grid_tweaks.gdshader" id="1_2gftl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_2gftl")
+shader_parameter/brightness = 1.0
+shader_parameter/anchor = -0.5
+shader_parameter/speed_scale = 1.0
+shader_parameter/fov = 0.2
+shader_parameter/line_count = 1.0
+shader_parameter/background_color = Color(0, 0.1, 0.2, 1)
+shader_parameter/grid_color = Color(1, 0.5, 1, 1)
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

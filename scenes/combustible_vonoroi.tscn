@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyp60stn63m10"]
+
+[ext_resource type="Shader" path="res://shaders/combustible_vonoroi.gdshader" id="1_aa465"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_aa465")
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

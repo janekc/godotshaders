@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddajvy16eam52"]
+
+[ext_resource type="Shader" path="res://shaders/creation.gdshader" id="1_8yqrn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_8yqrn")
+shader_parameter/res_x = 1152.0
+shader_parameter/res_y = 648.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

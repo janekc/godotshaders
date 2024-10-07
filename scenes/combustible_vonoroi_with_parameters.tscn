@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmf0ag6jvjh6i"]
+
+[ext_resource type="Shader" path="res://shaders/combustible_vonoroi_with_parameters.gdshader" id="1_lm66s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_lm66s")
+shader_parameter/kelvin = 1000.0
+shader_parameter/red_colour = 7.4
+shader_parameter/green_colour = 5.6
+shader_parameter/blue_colour = 4.4
+shader_parameter/time_factor = 1.5
+shader_parameter/move = false
+shader_parameter/resolution = 0.4
+shader_parameter/sin_roll = 0.25
+shader_parameter/cos_roll = 0.25
+shader_parameter/alpha = 1.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

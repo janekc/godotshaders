@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnk16eddunxal"]
+
+[ext_resource type="Shader" path="res://shaders/starry_infinite_tunnel.gdshader" id="1_s4x27"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_s4x27")
+shader_parameter/zoom = 2.0
+shader_parameter/rotate_speed = 0.5
+shader_parameter/disp = Vector2(0.5, 0.5)
+shader_parameter/transparent = false
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

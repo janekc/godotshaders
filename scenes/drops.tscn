@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ffinys1pipak"]
+
+[ext_resource type="Shader" path="res://shaders/drops.gdshader" id="1_tirlk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_tirlk")
+shader_parameter/color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/speed = 0.99
+shader_parameter/density = 100.0
+shader_parameter/compression = 0.2
+shader_parameter/trail_size = 50.0
+shader_parameter/brightness = 5.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

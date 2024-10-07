@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqjmhi8yiqvwa"]
+
+[ext_resource type="Shader" path="res://shaders/vonoroi_synapse.gdshader" id="1_65tx5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_65tx5")
+shader_parameter/pixel_size = Vector2(0.001, 0.001)
+shader_parameter/voronoi_scale = 20.0
+shader_parameter/voronoi_seed = 0.0
+shader_parameter/electric_scale = 20.0
+shader_parameter/electric_speed = 1.0
+shader_parameter/electric_power = 3.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

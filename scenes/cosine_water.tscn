@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf63uo8aiux8f"]
+
+[ext_resource type="Shader" path="res://shaders/cosine_water.gdshader" id="1_lsuu6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_lsuu6")
+shader_parameter/uv_scale = 1.0
+shader_parameter/color_alpha = 1.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

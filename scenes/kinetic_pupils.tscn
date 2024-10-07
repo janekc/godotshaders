@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddulsbwxdhet7"]
+
+[ext_resource type="Shader" path="res://shaders/kinetic_pupils.gdshader" id="1_ycy34"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_ycy34")
+shader_parameter/size = 7.0
+shader_parameter/speed1 = 2.0
+shader_parameter/speed2 = 1.0
+shader_parameter/color = Vector3(1, 1, 1)
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

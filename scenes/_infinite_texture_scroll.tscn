@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfcb5g3v2ll0h"]
+
+[ext_resource type="Shader" path="res://shaders/infinite_texture_scroll.gdshader" id="1_d55jw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_d55jw")
+shader_parameter/scroll_speed = 0.08
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 20.0
+shader_parameter/repeat_y = 12.0
+shader_parameter/row_offset = 1.0
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0

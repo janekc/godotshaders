@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca4d51ihswsfj"]
+
+[ext_resource type="Shader" path="res://shaders/protean_clouds.gdshader" id="1_8f5bs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adobg"]
+shader = ExtResource("1_8f5bs")
+shader_parameter/disp_ = Vector2(0.5, 0.5)
+shader_parameter/speed = 3.0
+shader_parameter/color1 = Vector3(0.005, 0.045, 0.075)
+shader_parameter/color2 = Vector3(0.033, 0.07, 0.03)
+shader_parameter/m3 = Basis(0.65, 1.12, -1.43, -1.75, 0.65, -0.3, 0.3, 1.4, 1.22)
+
+[node name="Drops" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_adobg")
+offset_right = 1920.0
+offset_bottom = 1080.0
