@@ -1,7 +1,9 @@
-res://mainScene.tscn
-res://scripts/fixture.gd
-res://scenes/fixture.tscn
 res://scenes/energyBeams.tscn
-res://addons/debug_menu/debug_menu.gd
+res://scripts/fixture.gd
+res://mainScene.tscn
+res://scenes/fixture.tscn
+res://globals.gd
 res://scripts/main_scene.gd
+res://scripts/globals.gd
 res://scenes/SettingsUI.tscn
+res://scripts/settings_ui.gd

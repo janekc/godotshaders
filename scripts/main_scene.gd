@@ -23,34 +23,26 @@ var scenes = [
 	"res://scenes/vonoroi_synapse.tscn"
 ]
 
+var 	fixture_node = load("res://scenes/fixture.tscn").instantiate()  # Reference to the 2D line fixture
+var 	settings = load("res://scenes/SettingsUI.tscn").instantiate()
+
 # Variable to track the current scene index
 var current_scene_index = 0
-var fixture_node  # Reference to the 2D line fixture
-var settings_ui
+
+
 
 
 # Called when the node is ready
 func _ready():
 	# Load the first scene
 	load_scene(scenes[current_scene_index])
-	Engine.set_max_fps(60)
-	# Load the SettingsUI scene
-	var settings_ui_scene = preload("res://scenes/SettingsUI.tscn")
-	settings_ui = settings_ui_scene.instantiate()
-	add_child(settings_ui)
+	Engine.set_max_fps(Globals.framerate)
+	
+	Globals.fixture = fixture_node
+	
+	add_child(Globals.fixture)
+	Globals.fixture.z_index = 100
 
-	# Connect the Apply button signal
-	var apply_button = settings_ui.get_node("ApplyButton")
-	
-	for child in settings_ui.get_children():
-		print(child.name)
-	
-	if apply_button:
-		pass
-		#apply_button.connect("pressed", self, "_on_apply_button_pressed")
-	else:
-		print("ApplyButton not found in SettingsUI")
-	
 
 # Function to load a new scene
 func load_scene(scene_path: String):
@@ -58,31 +50,29 @@ func load_scene(scene_path: String):
 	
 	# Remove the current scene (but keep the fixture)
 	for child in get_children():
-		if child != fixture_node:  # Don't remove the fixture
+		if child != Globals.fixture:  # Don't remove the fixture
 			remove_child(child)
 			child.queue_free()
 
 	# Add the new scene
 	add_child(new_scene)
-	
-	# Add the fixture (load it from a separate scene or script)
-	# Assuming you created a separate scene for the fixture, instantiate and add it
-	fixture_node = preload("res://scenes/fixture.tscn").instantiate()
-	add_child(fixture_node)  # Add the fixture to the main scene
 
 
 # Handle input
 func _input(event):
 	# Check if the right key is pressed
 	if event.is_action_pressed("ui_right"):
-		cycle_scene(1)  # Go to next scene
+		if ! Globals.in_menu:
+			cycle_scene(1)  # Go to next scene
 
 	# Check if the left key is pressed (optional for going backward)
 	if event.is_action_pressed("ui_left"):
-		cycle_scene(-1)  # Go to previous scene
+		if ! Globals.in_menu:
+			cycle_scene(-1)  # Go to previous scene
 
-	# Delegate mouse events to the fixture if necessary
-	fixture_node._input(event)  # Forward input to the fixture
+	if event.is_action_pressed("ui_cancel"):
+		open_menu()
+
 
 # Function to cycle through scenes
 func cycle_scene(direction: int):
@@ -98,11 +88,10 @@ func cycle_scene(direction: int):
 	load_scene(scenes[current_scene_index])
 
 
-func _on_apply_button_pressed():
-	# Get user input
-	var target_ip = settings_ui.get_node("TargetIPInput").text
-	var dot_count = int(settings_ui.get_node("DotCountInput").text)
-
-	# Update the fixture node variables
-	fixture_node.set_target_ip(target_ip)
-	fixture_node.set_dot_count(dot_count)
+func open_menu():
+	if ! Globals.in_menu:
+		add_child(settings)
+	else:
+		remove_child(settings)
+	
+	Globals.in_menu = not Globals.in_menu

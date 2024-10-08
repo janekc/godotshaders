@@ -18,7 +18,7 @@ config/icon="res://pictures/icon.svg"
 [autoload]
 
 DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
-SettingsDataManager="*res://addons/modular-settings-menu/singletons/settings_data_manager.gd"
+Globals="*res://scripts/globals.gd"
 
 [display]
 

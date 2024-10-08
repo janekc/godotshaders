@@ -18,8 +18,8 @@ var drag_offset = Vector2()  # Mouse offset for dragging the fixture
 var udp := PacketPeerUDP.new()  # UDP instance for sending Art-Net packets
 var rgb_data = []  # RGB data for each dot
 
-var target_ip = "10.10.10.54"  # Art-Net receiver IP address
-var dot_count = 20  # Number of dots
+var target_ip = Globals.target_ip
+var dot_count = Globals.dot_count
 
 func _ready():
 	# Initialize RGB data with default colors
@@ -54,32 +54,33 @@ func _process(delta):
 
 
 func _input(event):
-	if event is InputEventMouseButton:
-		if event.pressed:
+	if ! Globals.in_menu:
+		if event is InputEventMouseButton:
+			if event.pressed:
+				var mouse_pos = event.position
+
+				# Check if user clicked on the end point to resize
+				if (mouse_pos - (global_position + Vector2(line_length, 0))).length() < DOT_RADIUS * 2:
+					is_resizing = true
+				elif (mouse_pos - global_position).length() < line_length:  # Check if user clicked on the line to move it
+					is_moving = true
+					drag_offset = mouse_pos - global_position
+			else:
+				is_moving = false
+				is_resizing = false
+
+		elif event is InputEventMouseMotion:
 			var mouse_pos = event.position
 
-			# Check if user clicked on the end point to resize
-			if (mouse_pos - (global_position + Vector2(line_length, 0))).length() < DOT_RADIUS * 2:
-				is_resizing = true
-			elif (mouse_pos - global_position).length() < line_length:  # Check if user clicked on the line to move it
-				is_moving = true
-				drag_offset = mouse_pos - global_position
-		else:
-			is_moving = false
-			is_resizing = false
+			# Handle moving the fixture
+			if is_moving:
+				global_position = mouse_pos - drag_offset
 
-	elif event is InputEventMouseMotion:
-		var mouse_pos = event.position
-
-		# Handle moving the fixture
-		if is_moving:
-			global_position = mouse_pos - drag_offset
-
-		# Handle resizing the line
-		if is_resizing:
-			var new_length = (mouse_pos - global_position).length()
-			# Limit the length to a reasonable range
-			line_length = clamp(new_length, MIN_LENGTH, MAX_LENGTH)
+			# Handle resizing the line
+			if is_resizing:
+				var new_length = (mouse_pos - global_position).length()
+				# Limit the length to a reasonable range
+				line_length = clamp(new_length, MIN_LENGTH, MAX_LENGTH)
 
 
 # Function to update RGB data based on the scene colors at dot positions
@@ -155,6 +156,7 @@ func set_target_ip(ip: String):
 	udp.close()
 	target_ip = ip
 	udp.connect_to_host(target_ip, TARGET_PORT)
+
 
 # Function to set the number of dots
 func set_dot_count(count: int):
